@@ -3,11 +3,12 @@ import tkinter as tk
 WIN_SIZE = "200x100"
 
 
-
-def close_window():
-    window.destroy()
+def clear_text():
+    # clear the text in the text
+    text.delete(0, tk.END)
 
 def get_weather(zip):
+    clear_text()
     # get the weather for the given zip code using the API
     import requests
     url = f"http://api.openweathermap.org/data/2.5/weather?zip={zip}&appid=49da89b32f4c7a4fc739dc2ba9f278d0"
@@ -24,13 +25,13 @@ def get_weather(zip):
     except Exception as e:
         print(e)
         city_label["text"] = "Error"
+        temp_label["text"] = ""
 
 ### ? Main Program Entry Point ###
 
 window = tk.Tk()
 window.title("TinkWeather")
 window.geometry(WIN_SIZE)
-window.protocol("WM_DELETE_WINDOW", close_window)
 window.resizable(False, False)
 # center the window
 x = (window.winfo_screenwidth() // 2) - (100 // 2)
@@ -42,7 +43,7 @@ city_label = tk.Label(window, text="TinkWeather", font=("Arial", 20))
 city_label.pack()
 
 # * add label under the top label
-temp_label = tk.Label(window, text="Enter Zip Code", font=("Arial", 20))
+temp_label = tk.Label(window, text="Enter Zip:", font=("Arial", 20))
 temp_label.pack()
 
 

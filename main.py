@@ -17,12 +17,14 @@ def get_weather(zip):
         temp = response.json()["main"]["temp"]
         # convert the temp from Kelvin to Fahrenheit
         temp = (temp - 273.15) * 9/5 + 32
-        # round the temp to whole number
         temp = round(temp)
-        # set the text of the label to the temp
-        label["text"] = str(temp) + "°F"
-    except:
-        label["text"] = "Error"
+        # get the city name
+        city_label["text"] = response.json()["name"]
+        temp_label["text"] = str(temp) + "°F"
+    except Exception as e:
+        print(e)
+        city_label["text"] = "Error"
+
 ### ? Main Program Entry Point ###
 
 window = tk.Tk()
@@ -36,16 +38,21 @@ y = (window.winfo_screenheight() // 2) - (100 // 2)
 window.geometry('{}x{}+{}+{}'.format(200, 100, x, y))
 
 # * add label to top of window
-label = tk.Label(window, text="TinkWeather", font=("Arial", 20))
-label.pack()
+city_label = tk.Label(window, text="TinkWeather", font=("Arial", 20))
+city_label.pack()
+
+# * add label under the top label
+temp_label = tk.Label(window, text="Enter Zip Code", font=("Arial", 20))
+temp_label.pack()
 
 
 # * clicking enter in the txt box will call this function
-text = tk.Entry(window, width=20)
+text = tk.Entry(window, width=20) 
 text.focus_set()
 # bind the enter key to the get_weather function
 window.bind('<Return>', lambda event: get_weather(text.get()))
-text.pack()
+# place the text box at the bottom
+text.pack(side="bottom", fill="x", padx=10, pady=10)
 
 
 
